@@ -11,11 +11,12 @@ Usage:
 Parameters:
   apod_date = APOD date (format: YYYY-MM-DD)
 """
-from datetime import date
+from datetime import date, datetime
 import os
 import image_lib
 import inspect
-
+import sys
+import sqlite3
 # Global variables
 image_cache_dir = None  # Full path of image cache directory
 image_cache_db = None   # Full path of image cache database
@@ -52,8 +53,22 @@ def get_apod_date():
     Returns:
         date: APOD date
     """
-    # TODO: Complete function body
-    apod_date = date.fromisoformat('2022-12-25')
+    num_params = len(sys.argv) -1
+    if num_params >= 1:
+        check_date = sys.argv[1]
+        try:
+            date_obj = datetime.strptime(check_date, '%Y-%m-%d').date()
+            earliest_date = date(1995, 6, 16)
+            current_date = date.today()
+            if earliest_date <= date_obj <= current_date:
+                apod_date = date_obj.isoformat()
+            else:
+                raise ValueError
+        except ValueError:
+            print("Invalid date argument. Please enter a date between June 16, 1995 and today in the format YYYY-MM-DD.")
+            sys.exit(1)
+    else:
+        apod_date = date.today().isoformat()
     return apod_date
 
 def get_script_dir():
@@ -78,12 +93,24 @@ def init_apod_cache(parent_dir):
     Args:
         parent_dir (str): Full path of parent directory    
     """
-    global image_cache_dir
+    global image_cache_dir 
     global image_cache_db
     # TODO: Determine the path of the image cache directory
+    image_cache_dir = os.path.join(parent_dir, 'image_cache')
     # TODO: Create the image cache directory if it does not already exist
+    print(f'Image cache directory: {image_cache_dir}')
+    if not os.path.isdir(image_cache_dir):
+        os.mkdir(image_cache_dir)
+        print('Image cache directory created.')
     # TODO: Determine the path of image cache DB
+    image_cache_db = os.path.join(image_cache_dir, 'image_chache.db')
+    print(f'Image chache database: {image_cache_db}')
     # TODO: Create the DB if it does not already exist
+    if not os.path.isdir(image_cache_db):
+        con = sqlite3.connect(image_cache_db)
+        con.commit()
+        con.close()
+        print('Image cache database created.')
 
 def add_apod_to_cache(apod_date):
     """Adds the APOD image from a specified date to the image cache.
@@ -99,7 +126,7 @@ def add_apod_to_cache(apod_date):
         int: Record ID of the APOD in the image cache DB, if a new APOD is added to the
         cache successfully or if the APOD already exists in the cache. Zero, if unsuccessful.
     """
-    print("APOD date:", apod_date.isoformat())
+    print("APOD date:", apod_date)
     # TODO: Download the APOD information from the NASA API
     # TODO: Download the APOD image
     # TODO: Check whether the APOD already exists in the image cache
