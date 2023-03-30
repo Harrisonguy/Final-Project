@@ -9,11 +9,6 @@ API_KEY = 'zDZBpCmZcQyKzskgCae1cZJLyq3edLtEAK9e7mIO'
 
 def main():   
     # TODO: Add code to test the functions in this module
-    #apod_date = '2023-03-27'
-    apod_date = get_apod_date()
-    apod_info_dict = get_apod_info(apod_date)
-    apod_image_url = get_apod_image_url(apod_info_dict)
-    print(apod_image_url)
     return
 
 def get_apod_info(apod_date):
@@ -26,7 +21,7 @@ def get_apod_info(apod_date):
     Returns:
         dict: Dictionary of APOD info, if successful. None if unsuccessful
     """
-    
+
     apod_params = {'date': apod_date,
                    'thumbs': True,
                    'api_key': API_KEY
@@ -55,6 +50,7 @@ def get_apod_image_url(apod_info_dict):
     Returns:
         str: APOD image URL
     """
+
     media_type = apod_info_dict['media_type']
     if media_type == 'image':
         image_url = apod_info_dict['hdurl']
