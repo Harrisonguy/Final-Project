@@ -26,7 +26,7 @@ def get_apod_info(apod_date):
     Returns:
         dict: Dictionary of APOD info, if successful. None if unsuccessful
     """
-    #apod_date_url =  API_APOD_URL +'?api_key=' + API_KEY + '&date=' + apod_date
+    
     apod_params = {'date': apod_date,
                    'thumbs': True,
                    'api_key': API_KEY

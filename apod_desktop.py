@@ -19,6 +19,7 @@ import sys
 import sqlite3
 import apod_api
 import hashlib
+import re
 # Global variables
 image_cache_dir = None  # Full path of image cache directory
 image_cache_db = None   # Full path of image cache database
@@ -265,6 +266,9 @@ def determine_apod_file_path(image_title, image_url):
     """
     # TODO: Complete function body
     apod_img_exe = '.' + image_url.split('.')[-1]
+    image_title = image_title.strip()
+    image_title = re.sub(r'\s+', '_', image_title)
+    image_title = re.sub(r'[^\w\d_]', '', image_title)
     file_path = os.path.join(image_cache_dir, image_title + apod_img_exe)
     
     return file_path
