@@ -56,6 +56,7 @@ def get_apod_date():
     Returns:
         date: APOD date
     """
+    
     earliest_date = date(1995, 6, 16)
     current_date = date.today()
     num_params = len(sys.argv) -1
@@ -63,12 +64,31 @@ def get_apod_date():
         check_date = sys.argv[1]
         try:
             date_obj = datetime.strptime(check_date, '%Y-%m-%d').date()
-            if earliest_date <= date_obj <= current_date:
-                apod_date = date_obj.isoformat()
+            if earliest_date <= date_obj <= current_date:                
+                apod_date = date_obj 
             else:
-                raise ValueError
+                print('Error: ', end='')
+                if date_obj > current_date:
+                    print('APOD date cannot be in the future')
+                elif earliest_date > date_obj:
+                    print('APOD date cannot be earlier than 1995-06-16')
+                
         except ValueError:
-            print("Invalid date argument. Please enter a date between June 16, 1995 and today in the format YYYY-MM-DD.")
+             # I can split this into other places
+            
+# Error:
+    #Invalid date format;
+        #day is out of range for month
+        #Invalid isoformat string:{'check_date'}
+            
+    # // 
+    # // if 
+
+
+        
+            
+            
+        
             sys.exit()
     else:
         apod_date = date.today().isoformat()
