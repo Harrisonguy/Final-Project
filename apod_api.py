@@ -26,9 +26,13 @@ def get_apod_info(apod_date):
     Returns:
         dict: Dictionary of APOD info, if successful. None if unsuccessful
     """
-    apod_date_url =  API_APOD_URL +'?api_key=' + API_KEY + '&date=' + apod_date
+    #apod_date_url =  API_APOD_URL +'?api_key=' + API_KEY + '&date=' + apod_date
+    apod_params = {'date': apod_date,
+                   'thumbs': True,
+                   'api_key': API_KEY
+                   }
     print(f'Getting {apod_date} APOD information from NASA...', end='')
-    resp_msg = requests.get(apod_date_url)
+    resp_msg = requests.get(API_APOD_URL, params=apod_params)
     
     if resp_msg.ok:
         print('success')
@@ -56,7 +60,7 @@ def get_apod_image_url(apod_info_dict):
         image_url = apod_info_dict['hdurl']
         return image_url
     elif media_type == 'video':
-        video_url = apod_info_dict['url']
+        video_url = apod_info_dict['thumbnail_url']
         return video_url 
     else:
         print('invalid media type')
