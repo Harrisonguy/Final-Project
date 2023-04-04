@@ -11,7 +11,7 @@ Usage:
 Parameters:
   apod_date = APOD date (format: YYYY-MM-DD)
 """
-from datetime import date, datetime
+import datetime as dt
 import os
 import image_lib
 import inspect
@@ -20,6 +20,7 @@ import sqlite3
 import apod_api
 import hashlib
 import re
+import calendar
 # Global variables
 image_cache_dir = None  # Full path of image cache directory
 image_cache_db = None   # Full path of image cache database
@@ -57,13 +58,14 @@ def get_apod_date():
         date: APOD date
     """
     
-    earliest_date = date(1995, 6, 16)
-    current_date = date.today()
+    earliest_date = dt.date(1995, 6, 16)
+    current_date = dt.date.today()
     num_params = len(sys.argv) -1
     if num_params >= 1:
         check_date = sys.argv[1]
         try:
-            date_obj = datetime.strptime(check_date, '%Y-%m-%d').date()
+            date_obj = dt.datetime.strptime(check_date, '%Y-%m-%d').date()
+            
             if earliest_date <= date_obj <= current_date:                
                 apod_date = date_obj 
             else:
@@ -72,27 +74,26 @@ def get_apod_date():
                     print('APOD date cannot be in the future')
                 elif earliest_date > date_obj:
                     print('APOD date cannot be earlier than 1995-06-16')
-                
+
+                print('Script execution aborted')
+                sys.exit()
+
         except ValueError:
-             # I can split this into other places
+            print(f'Error: Invalid date format; ', end='')
             
-# Error:
-    #Invalid date format;
-        #day is out of range for month
-        #Invalid isoformat string:{'check_date'}
+            #if date_obj.day > calendar.monthrange(date_obj.year, date_obj.month)[1]:
+            #    print('day is out of range for month')
+                
+            #else:
+            print(f'Invalid isoformat string: {check_date}')
             
-    # // 
-    # // if 
-
-
-        
-            
-            
-        
+            print('Script execution aborted')
             sys.exit()
     else:
-        apod_date = date.today().isoformat()
+        apod_date = dt.date.today().isoformat()
     return apod_date
+        #day is out of range for month
+        #Invalid isoformat string:{'check_date'}
 
 def get_script_dir():
     """Determines the path of the directory in which this script resides
