@@ -33,17 +33,21 @@ root.iconbitmap(icon_path)
 
 # add frames 
 frm_top = ttk.Frame(root)
-frm_top.grid(row=0, column=0, columnspan=2, sticky=NSEW)
+frm_top.grid(row=0, column=0, columnspan=2, sticky=NSEW, padx=10, pady=10)
 
 frm_btm_left = ttk.LabelFrame(root, text='View Cached Image')
-frm_btm_left.grid(row=1, column=0, sticky=NSEW) 
+frm_btm_left.grid(row=1, column=0, sticky=NSEW, padx=10, pady=10) 
 
 frm_btm_right = ttk.LabelFrame(root, text='Get More Images')
-frm_btm_right.grid(row=1, column=1, sticky=NSEW)
+frm_btm_right.grid(row=1, column=1, sticky=NSEW, padx=10, pady=10)
 
 # add widgets
 select_img_lbl = ttk.Label(frm_btm_left, text='Select Image')
-select_img_lbl.grid(row=0, column=0, sticky=NSEW)
+select_img_lbl.grid(row=0, column=0, sticky=NSEW, padx=10, pady=10)
+earliest_date = dt.date(1995, 6, 16)
+current_date = dt.date.today()
+cal = DateEntry(frm_btm_right, mindate=earliest_date, maxdate=current_date)
+cal.grid(row=0, column=1)
 
 # Put image into frame
 image_path = os.path.join(script_dir, 'nasa.png')
@@ -60,13 +64,13 @@ def handle_set_desktop():
     image_lib.set_desktop_background_image(image_path)
 
 background_button = Button(frm_btm_left, text='Set as Desktop', command=handle_set_desktop)
-background_button.grid(row=0, column=2)
+background_button.grid(row=0, column=2, padx=10, pady=10)
 
 # Pull-down list of saved apod titles
 title_list = sorted(apod_desktop.get_all_apod_titles())
 img_menu = ttk.Combobox(frm_btm_left, value=title_list, state='readonly')
 img_menu.set("Select an Image")
-img_menu.grid(row=0, column=1, padx=10)
+img_menu.grid(row=0, column=1, padx=10, pady=10)
 
 
 def handle_title_select(event):
@@ -82,10 +86,6 @@ def handle_title_select(event):
     update_image(explantion, image_path)
 
 img_menu.bind('<<ComboboxSelected>>', handle_title_select)
-earliest_date = dt.date(1995, 6, 16)
-current_date = dt.date.today()
-cal = DateEntry(frm_btm_right, mindate=earliest_date, maxdate=current_date)
-cal.grid(row=0, column=1)
 
 def get_selected_date():
     selected_date = cal.get_date().strftime('%Y-%m-%d')
@@ -117,9 +117,9 @@ def update_image(explantion, file_path, title=None):
 
 
 select_date_lbl = ttk.Label(frm_btm_right, text='Select Date')
-select_date_lbl.grid(row=0, column=0)
+select_date_lbl.grid(row=0, column=0, padx=10, pady=10)
 
 download_button = Button(frm_btm_right, text='Download Image', command=get_selected_date)
-download_button.grid(row=0, column=2)
+download_button.grid(row=0, column=2, padx=10, pady=10)
 
 root.mainloop()
