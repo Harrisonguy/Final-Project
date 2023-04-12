@@ -20,6 +20,7 @@ apod_desktop.init_apod_cache(script_dir)
 root = Tk()
 root.geometry()
 root.title("Astronomy Picture of the Day Viewer")
+root.resizable(True, True)
 root.rowconfigure(0, weight=75)
 root.rowconfigure(1, weight=25)
 
@@ -120,4 +121,5 @@ select_date_lbl.grid(row=0, column=0)
 
 download_button = Button(frm_btm_right, text='Download Image', command=get_selected_date)
 download_button.grid(row=0, column=2)
+
 root.mainloop()
