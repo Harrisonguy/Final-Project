@@ -80,11 +80,7 @@ def get_apod_date():
 
         except ValueError:
             print(f'Error: Invalid date format; ', end='')
-            
-            #if date_obj.day > calendar.monthrange(date_obj.year, date_obj.month)[1]:
-            #    print('day is out of range for month')
-                
-            #else:
+
             print(f'Invalid isoformat string: {check_date}')
             
             print('Script execution aborted')
@@ -331,9 +327,17 @@ def get_all_apod_titles():
     Returns:
         list: Titles of all images in the cache
     """
+
     # TODO: Complete function body
     # NOTE: This function is only needed to support the APOD viewer GUI
-    return
+    con = sqlite3.connect(image_cache_db)
+    cur = con.cursor()
+    get_title_query = """SELECT title FROM apod"""
+    cur.execute(get_title_query)
+    query_result = [row[0] for row in cur.fetchall()] 
+    con.close()
+
+    return query_result
 
 if __name__ == '__main__':
     main()
