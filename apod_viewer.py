@@ -1,5 +1,4 @@
 from tkinter import *
-import inspect
 import os
 import apod_desktop
 from tkinter import ttk
