@@ -20,7 +20,6 @@ import sqlite3
 import apod_api
 import hashlib
 import re
-import calendar
 # Global variables
 image_cache_dir = None  # Full path of image cache directory
 image_cache_db = None   # Full path of image cache database
